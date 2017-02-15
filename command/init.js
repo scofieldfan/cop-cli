@@ -6,6 +6,9 @@ const chalk = require('chalk')
 const fs = require('fs')
 const doT = require('dot')
 const mkpath = require('mkpath');
+var path = require('path');
+
+
 require.extensions['.tpl'] = function (module, filename) {
     module.exports = fs.readFileSync(filename, 'utf8');
 };
@@ -53,19 +56,20 @@ module.exports = () => {
         var jsOutput = doT.template(jsTpl)(data);
         var phpOutput = doT.template(phpTpl)(data);
 
-        // console.log(lessOutput);
-        // console.log(jsOutput);
-        // console.log(phpOutput);
-        mkdir(__dirname+'/static/css/pages').then(()=>{
-            return writeFile(__dirname+'/static/css/pages/',`${data.controller}_${data.method}.less`,lessOutput);
+        var dir = process.cwd();
+        console.log("process cwd",process.cwd());
+        console.log("path.resolve",path.resolve('./'));
+
+        mkdir(dir+'/static/css/pages').then(()=>{
+            return writeFile(dir+'/static/css/pages/',`${data.controller}_${data.method}.less`,lessOutput);
         }).then(()=>{
-            return mkdir(__dirname+'/static/js/pages');
+            return mkdir(dir+'/static/js/pages');
         }).then(()=>{
-            return writeFile(__dirname+'/static/js/pages/',`${data.controller}_${data.method}.js`,jsOutput);
+            return writeFile(dir+'/static/js/pages/',`${data.controller}_${data.method}.js`,jsOutput);
         }).then(()=>{
-            return mkdir(__dirname+`/view/${data.controller}/`);
+            return mkdir(dir+`/views/${data.controller}/`);
         }).then(()=>{
-            return writeFile(__dirname+`/view/${data.controller}/`,`${data.controller}_${data.method}_list-new.php`,phpOutput);
+            return writeFile(dir+`/views/${data.controller}/`,`${data.controller}_${data.method}_list-new.php`,phpOutput);
         }).then(()=>{
             process.exit();
         });

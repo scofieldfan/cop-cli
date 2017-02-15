@@ -3,6 +3,8 @@
  // 定义脚手架的文件路径
 process.env.NODE_PATH = __dirname + '/../node_modules/'
 
+
+console.log("zebra path:",__dirname);
 const program = require('commander')
 
  // 定义当前版本
@@ -15,7 +17,7 @@ program
 program
     .command('init')
     .description('初始化 js, php,css')
-    .alias('l')
+    .alias('it')
     .action(() => {
         require('../command/init')()
     })
