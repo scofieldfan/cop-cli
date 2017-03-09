@@ -31,7 +31,7 @@ module.exports = () => {
     co(function *() {
 
         // 分步接收用户输入的参数
-        let controller = yield prompt(`? controller名称 (${DEFAULT_CONTROLLER}) `) ;
+        let controller = yield prompt(`? controller名称 (${DEFAULT_CONTROLLER}) `);
         controller = controller || DEFAULT_CONTROLLER;
 
         let method = yield prompt(`? 方法名称 (${DEFAULT_METHOD}) `);
@@ -44,61 +44,55 @@ module.exports = () => {
         listName = listName || DEFAULT_LIST;
 
 
-        var data =  {
-             controller:controller,
-             method:method,
-             api:api,
-             listName:listName
+        var data = {
+            controller: controller,
+            method: method,
+            api: api,
+            listName: listName
         };
 
-        yield prompt('您的输入是：'+JSON.stringify(data));
+        yield prompt('您的输入是：' + JSON.stringify(data));
         var lessOutput = doT.template(lessTpl)(data);
         var jsOutput = doT.template(jsTpl)(data);
         var phpOutput = doT.template(phpTpl)(data);
 
         var dir = process.cwd();
-        console.log("process cwd",process.cwd());
-        console.log("path.resolve",path.resolve('./'));
+        console.log("process cwd", process.cwd());
+        console.log("path.resolve", path.resolve('./'));
 
-        mkdir(dir+'/static/css/pages').then(()=>{
-            return writeFile(dir+'/static/css/pages/',`${data.controller}_${data.method}.less`,lessOutput);
-        }).then(()=>{
-            return mkdir(dir+'/static/js/pages');
-        }).then(()=>{
-            return writeFile(dir+'/static/js/pages/',`${data.controller}_${data.method}.js`,jsOutput);
-        }).then(()=>{
-            return mkdir(dir+`/views/${data.controller}/`);
-        }).then(()=>{
-            return writeFile(dir+`/views/${data.controller}/`,`${data.controller}_${data.method}_list-new.php`,phpOutput);
-        }).then(()=>{
-            process.exit();
-        });
+        mkdir(dir + '/static/css/pages')
+        .then(()=> writeFile(dir + '/static/css/pages/', `${data.controller}_${data.method}.less`, lessOutput))
+        .then(()=> mkdir(dir + '/static/js/pages'))
+        .then(()=> writeFile(dir + '/static/js/pages/', `${data.controller}_${data.method}.js`, jsOutput))
+        .then(()=> mkdir(dir + `/views/${data.controller}/`))
+        .then(()=> writeFile(dir + `/views/${data.controller}/`, `${data.method}.tpl`, phpOutput))
+        .then(()=> process.exit());
     })
 }
 const mkdir = (directory) => {
     return new Promise((resolve, reject) => {
         mkpath(directory, function (err) {
-            if (err){
-              throw err;
-               reject();
-            }else{
-               resolve();
+            if (err) {
+                throw err;
+                reject();
+            } else {
+                resolve();
             }
         });
     });
 }
-const writeFile = (dirName,fileName,content) => {
-     return new Promise((resolve, reject) => {
-         fs.writeFile(dirName + fileName, content, 'utf-8', (err) => {
-             if (err) {
-                 console.error("文件fileName生成错误");
-                 throw err;
-                 reject();
-             }else{
-                 resolve();
-             }
-             console.log('\n')
-         });
+const writeFile = (dirName, fileName, content) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(dirName + fileName, content, 'utf-8', (err) => {
+            if (err) {
+                console.error("文件fileName生成错误");
+                throw err;
+                reject();
+            } else {
+                resolve();
+            }
+            console.log('\n')
+        });
 
     });
 }

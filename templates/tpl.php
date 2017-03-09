@@ -10,18 +10,17 @@
 <div class="wrapper">
     <div id="mainContainer" class="{{=it.controller}}-{{=it.method}}-container" v-cloak="v-cloak">
 
-        <el-row>
-            <div class="nav-box">
-                <div class="nav">
-                    <div class="ks-breadcrumb">
-                        <el-breadcrumb separator="/">
-                            <el-breadcrumb-item :to="{ path: '/{{=it.controller}}/{{=it.method}}' }">一级菜单</el-breadcrumb-item>
-                            <el-breadcrumb-item>列表</el-breadcrumb-item>
-                        </el-breadcrumb>
-                    </div>
+        <div class="nav-box">
+            <div class="nav">
+                <div class="ks-breadcrumb">
+                    <el-breadcrumb separator="/">
+                        <el-breadcrumb-item :to="{ path: '/{{=it.controller}}/{{=it.method}}' }">一级菜单
+                        </el-breadcrumb-item>
+                        <el-breadcrumb-item>列表</el-breadcrumb-item>
+                    </el-breadcrumb>
                 </div>
             </div>
-        </el-row>
+        </div>
 
         <el-form ref="search" label-position="right" :model="search" label-width="100px" class="search-form" style="">
 
@@ -54,7 +53,7 @@
 
             </el-table>
             <div class="page-bar">
-                <el-pagination layout="prev, pager, next"  :current-page="pageNo" @current-change="handleCurrentChange"
+                <el-pagination layout="prev, pager, next" :current-page="pageNo" @current-change="handleCurrentChange"
                                :page-size="search.QueryNumber" :total="tableData.total"></el-pagination>
             </div>
         </div>
